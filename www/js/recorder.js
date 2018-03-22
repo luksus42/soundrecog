@@ -1,6 +1,6 @@
 (function(window){
 
-  var WORKER_PATH = 'https://www.acrcloud.com/js/recorderWorker.js';
+  var WORKER_PATH = 'https://rawgit.com/luksus42/soundrecog/master/www/js/recorderWorker.js';
 
   var Recorder = function(source, cfg){
     var config = cfg || {};

@@ -49,6 +49,6 @@ function identify(data, length, options, cb) {
     contentType: false,
     processData :false
   }).done(function(data){
-        processResult(data);
+        processResult(JSON.parse(data));
     });
 }
