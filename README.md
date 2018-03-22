@@ -11,5 +11,5 @@ This key must be deposited in the app configuration.
 
 build a click-package from source: 
   
-  $: click build soundrecog-app/
+  $: click build soundrecog/
 
