@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>An Ubuntu HTML5 application</title>
+    <meta name="description" content="An Ubuntu HTML5 application">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+
+    <!--
+         Application stylesheets
+         Include your own stylesheets below to style your application.
+      -->
+    <link rel="stylesheet" href="css/app.css" type="text/css" />
+    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+
+    <!--
+        Ubuntu UI javascript imports - Ambiance theme
+        Ubuntu provides building blocks that you can use in your application. For more information, you can check out the documentation at http://design.ubuntu.com/apps.
+     -->
+    <!-- Ubuntu UI Style imports - Ambiance theme 
+    <link href="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/css/appTemplate.css" rel="stylesheet" type="text/css" />
+    -->
+
+    <!-- application js imports -->
+    <script src="js/application.js"></script>
+    <script src="js/recorder.js"></script>
+    <script src="js/acr-api.js"></script>
+    <script src="js/ui.js"></script>
+
+    <script src="js/jquery/jquery.min.js"></script>
+
+    <script src="js/cryptoJS/core.js"></script>
+    <script src="js/cryptoJS/sha1.js"></script>
+    <script src="js/cryptoJS/hmac.js"></script>
+    <script src="js/cryptoJS/enc-base64.js"></script>
+
+    <!-- External javascript imports -->
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/core.js"></script>
+    <!-- <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/dialogs.js"></script>
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/page.js"></script>
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/pagestacks.js"></script>
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/tab.js"></script>
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/tabs.js"></script>
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/list.js"></script>
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/toolbars.js"></script>
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/option-selector.js"></script> -->
+
+</head>
+<body>
+    <div data-role="mainview">
+
+        <div data-role="content">
+
+            <div id="debugPlayer">
+            </div>
+
+            <div id="result">
+                <ul id="resultList">
+                </ul>
+            </div>
+
+            <div class="button-container">
+                <button id="record" class="button button-glow">
+                    <i class="fa fa-microphone"></i>
+                </button>
+
+            </div>
+
+        </div><!-- End of Content-->
+    </div>
+</body>
+</html>
+

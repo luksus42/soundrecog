@@ -1,0 +1,95 @@
+.button-glow {
+    -webkit-animation-duration: 3s;
+    animation-duration: 3s;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-name: glowing-action;
+    animation-name: glowing-action;
+}
+
+.button {
+    width: 50%;
+    height: 50%;
+    max-height: 250px;
+    max-width: 250px;
+    color: #FFF;
+    background-color: rgb(165, 222, 55);
+    border-color: #A5DE37;
+    border-radius: 100%;
+    font-weight: 300;
+    font-size: 36px;
+    font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    text-decoration: none;
+    text-align: center;
+    line-height: 60px;
+    padding: 0;
+    margin: 0;
+    margin-top: 20px;
+    display: inline-block;
+    cursor: pointer;
+    border: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-transition-property: all;
+    transition-property: all;
+    -webkit-transition-duration: .3s;
+    transition-duration: .3s;
+    -webkit-appearance: button;
+    text-transform: none;
+    overflow: visible;
+    bottom: 0px;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.fa-microphone:before {
+    content: "\f130";
+}
+
+@-webkit-keyframes glowing-action {
+    from {
+      -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.3);
+              box-shadow: 0 0 0 rgba(165, 222, 55, 0.3); }
+    50% {
+      -webkit-box-shadow: 0 0 20px rgba(165, 222, 55, 0.8);
+              box-shadow: 0 0 20px rgba(165, 222, 55, 0.8); }
+    to {
+      -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.3);
+              box-shadow: 0 0 0 rgba(165, 222, 55, 0.3); } }
+  @keyframes glowing-action {
+    from {
+      -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.3);
+              box-shadow: 0 0 0 rgba(165, 222, 55, 0.3); }
+    50% {
+      -webkit-box-shadow: 0 0 20px rgba(165, 222, 55, 0.8);
+              box-shadow: 0 0 20px rgba(165, 222, 55, 0.8); }
+    to {
+      -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.3);
+              box-shadow: 0 0 0 rgba(165, 222, 55, 0.3); } }
+
+.button-container {
+    width: 100vw;
+    text-align: center;
+    height: 100vw;
+    position: absolute;
+    bottom: 0%;
+    max-height: 50%;
+    border: none !important;
+}
+
+html {
+    font-size: 10px;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+.button:active{
+    background: rgba(188, 236, 93, 0.877);
+    color: rgb(255, 93, 53);
+}
