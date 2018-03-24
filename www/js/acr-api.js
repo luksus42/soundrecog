@@ -42,6 +42,11 @@ function identify(data, length, options, cb) {
   //formData.append("audio_format", options.audio_format);
   //console.debug(formData);
   
+  if(debug) {
+    processResult(JSON.parse(null));
+    return;
+  }
+
   $.ajax({
     url: 'http://'+options.host + options.endpoint,
     method: 'POST',

@@ -17,9 +17,9 @@
         Ubuntu UI javascript imports - Ambiance theme
         Ubuntu provides building blocks that you can use in your application. For more information, you can check out the documentation at http://design.ubuntu.com/apps.
      -->
-    <!-- Ubuntu UI Style imports - Ambiance theme 
+    <!-- Ubuntu UI Style imports - Ambiance theme -->
     <link href="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/css/appTemplate.css" rel="stylesheet" type="text/css" />
-    -->
+    
 
     <!-- application js imports -->
     <script src="js/application.js"></script>
@@ -36,34 +36,100 @@
 
     <!-- External javascript imports -->
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/core.js"></script>
-    <!-- <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/dialogs.js"></script>
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/buttons.js"></script>
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/dialogs.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/page.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/pagestacks.js"></script>
+    
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/tab.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/tabs.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/list.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/toolbars.js"></script>
-    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/option-selector.js"></script> -->
+    <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/option-selector.js"></script> 
 
 </head>
 <body>
     <div data-role="mainview">
 
+            <header data-role="header">
+                </header>
+
         <div data-role="content">
+        
+            <div data-role="pagestack" id="pages">
+                <div data-role="page" id="main" data-title="recognize">
 
-            <div id="debugPlayer">
-            </div>
+                    <footer data-role="footer" id="toolbar" class="revealed">
+                            <nav>
+                                <ul>
+                                    <li data-role="tabitem" data-page="settingsTab">
+                                        <a href="#" id="settingsBtn">
+                                            <img src="/usr/share/icons/ubuntu-mobile/actions/scalable/settings.svg" alt="no pic"/>
+                                            <span>Settings</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </footer>
 
-            <div id="result">
-                <ul id="resultList">
-                </ul>
-            </div>
+                    <div id="appContent">
+                        <div id="debugPlayer">
+                        </div>
 
-            <div class="button-container">
-                <button id="record" class="button button-glow">
-                    <i class="fa fa-microphone"></i>
-                </button>
+                        <div class="container">
+                            <div id="header">
 
+                            </div>
+                        </div>
+
+                        <div class="container">
+                            <div id="result">
+                                <ul id="resultList">
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="container">
+
+                            <button id="record" class="button button-glow">
+                                <i class="fa fa-microphone"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div data-role="page" id="settings" data-title="settings">
+                    
+                    <footer data-role="footer" id="settingsToolbar" class="revealed">
+                        <nav>
+                            <ul>
+                                <li>
+                                    <a href="#" id="save">
+                                        <img src="/usr/share/icons/ubuntu-mobile/actions/scalable/save.svg" alt="no pic"/>
+                                        <span>save</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </footer>
+
+                    <div class="settingGroup">
+                        <h1>ACRCloud API:</h1>
+                        <p id="host" style="margin: 15px 0;display:block">
+                            <label for="host">host: </label>
+                            <input type="url" id="hostInput" placeholder="acrcloud api host" style="width:100%">
+                        </p>
+                        <p id="key" style="margin: 15px 0;display:block">
+                            <label for="key">key: </label>
+                            <input type="text" id="keyInput" placeholder="acrcloud api key" style="width:100%">
+                        </p>
+                        <p id="secret" style="margin: 15px 0;display:block">
+                            <label for="secret">secret: </label>
+                            <input type="text" id="secretInput" placeholder="acrcloud api secret" style="width:100%">
+                        </p>
+                    </div>
+
+                </div>  
             </div>
 
         </div><!-- End of Content-->

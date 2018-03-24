@@ -8,10 +8,10 @@
 }
 
 .button {
-    width: 50%;
-    height: 50%;
-    max-height: 250px;
-    max-width: 250px;
+    width: inherit;
+    height: 100%;
+    max-height: 200px;
+    max-width: 200px;
     color: #FFF;
     background-color: rgb(165, 222, 55);
     border-color: #A5DE37;
@@ -22,9 +22,8 @@
     text-decoration: none;
     text-align: center;
     line-height: 60px;
-    padding: 0;
-    margin: 0;
-    margin-top: 20px;
+    margin-left: -10px;
+    margin-bottom: 20px;
     display: inline-block;
     cursor: pointer;
     border: none;
@@ -38,7 +37,6 @@
     -webkit-appearance: button;
     text-transform: none;
     overflow: visible;
-    bottom: 0px;
 }
 
 .fa {
@@ -74,12 +72,11 @@
       -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.3);
               box-shadow: 0 0 0 rgba(165, 222, 55, 0.3); } }
 
-.button-container {
+.container {
+    margin-top: 0.8rem;
     width: 100vw;
     text-align: center;
     height: 100vw;
-    position: absolute;
-    bottom: 0%;
     max-height: 50%;
     border: none !important;
 }
@@ -92,4 +89,76 @@ html {
 .button:active{
     background: rgba(188, 236, 93, 0.877);
     color: rgb(255, 93, 53);
+}
+
+#result {
+    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+    font-size: 1.5rem;
+    line-height: 2.2rem;
+    line-break: normal;
+    overflow: auto;
+}
+
+ul {
+    list-style-type: none;
+    margin-left: 0px;
+    padding-left: 0px;
+}
+
+#resultList {
+    margin-left: 0px;
+    padding: 0px;
+}
+
+.wrapper {
+    display: table-cell;
+    vertical-align: bottom;
+    height: 500px;
+}
+#appContent {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    position: fixed;
+    bottom: 1rem;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    background: #f7f7f7 !important;
+}
+
+[data-role="header"]:after {
+    background: #A5DE37 !important;
+    border: none !important;
+    height: 3px !important;
+    width: 100%;
+}
+
+[data-role="header"] {
+    height: 45px !important;
+    width: 100%;
+}
+
+[data-role="tabtitle"] {
+    text-align: center !important;
+    padding-left: 28px !important;
+}
+
+[data-role="back-btn"]:disabled {
+    width: 40px !important;
+}
+
+.settingGroup {
+    padding-left: 20px;
+    margin-top: 1rem;
+    margin-bottom: 1.0rem;
+    padding-bottom: 1rem;
+    font-size: 1.2rem;
+    width: 80%;
+}
+
+input,p {
+    font-size: 1.2rem !important;
 }

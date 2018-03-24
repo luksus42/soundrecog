@@ -3,6 +3,7 @@
     "policy_groups": [
         "networking",
         "audio",
+        "microphone",
         "webview",
         "content_exchange"
     ],

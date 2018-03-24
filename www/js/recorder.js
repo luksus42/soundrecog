@@ -1,13 +1,22 @@
 (function(window){
 
   var WORKER_PATH = 'https://rawgit.com/luksus42/soundrecog/master/www/js/recorderWorker.js';
+  //var WORKER_PATH = "https://www.acrcloud.com/js/recorderWorker.js";
+  //var WORKER_PATH = "js/recorderWorker.js";
 
   var Recorder = function(source, cfg){
     var config = cfg || {};
     var bufferLen = config.bufferLen || 4096;
     this.context = source.context;
     this.node = this.context.createScriptProcessor(bufferLen, 2, 2);
-    var worker = new Worker(config.workerPath || WORKER_PATH);
+    var worker;
+    try{
+      worker = new Worker(config.workerPath || WORKER_PATH);
+    }
+    catch(e){
+      console.log("could not load worker: ", e.message);
+      return;
+    }
     worker.postMessage({
       command: 'init',
       config: {
