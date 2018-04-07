@@ -1,4 +1,4 @@
-# SoundRecog
+# SoundRecog / work in progress
 Html5-app for music recognition services for UBPorts aka Ubuntu Touch.
 
 It uses the ACRCloud API, which provides several services regarding music recognition.
