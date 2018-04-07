@@ -9,7 +9,7 @@
             "desktop": "soundrecog.desktop"
         }
     },
-    "version": "0.1",
+    "version": "0.2",
     "maintainer": "Lukas Baubkus <lukas42@posteo.de>",
-    "framework": "ubuntu-sdk-15.04.5"
+    "framework": "ubuntu-sdk-15.04.6"
 }

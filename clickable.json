@@ -1,5 +1,7 @@
 {
-  "sdk": "ubuntu-sdk-15.04",
-  "arch": "armhf",
-  "template": "pure"
+  "template": "pure",
+  "kill": "webapp-container",
+  "ignore": [
+    ".git"
+  ]
 }

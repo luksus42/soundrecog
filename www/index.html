@@ -19,13 +19,6 @@
      -->
     <!-- Ubuntu UI Style imports - Ambiance theme -->
     <link href="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/css/appTemplate.css" rel="stylesheet" type="text/css" />
-    
-
-    <!-- application js imports -->
-    <script src="js/application.js"></script>
-    <script src="js/recorder.js"></script>
-    <script src="js/acr-api.js"></script>
-    <script src="js/ui.js"></script>
 
     <script src="js/jquery/jquery.min.js"></script>
 
@@ -46,6 +39,10 @@
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/list.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/toolbars.js"></script>
     <script src="/usr/share/ubuntu-html5-ui-toolkit/0.1/ambiance/js/option-selector.js"></script> 
+
+    <!-- application js imports -->
+    <script src="js/acr-api.js"></script>
+    <script src="js/application.js"></script>
 
 </head>
 <body>
@@ -73,12 +70,8 @@
                         </footer>
 
                     <div id="appContent">
-                        <div id="debugPlayer">
-                        </div>
-
                         <div class="container">
                             <div id="header">
-
                             </div>
                         </div>
 
@@ -87,6 +80,7 @@
                                 <ul id="resultList">
                                 </ul>
                             </div>
+                            <div id="debugPlayer"></div>
                         </div>
 
                         <div class="container">

@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=SoundRecog
-Exec=webapp-container --inspector ./www/index.html
+Exec=webapp-container --app-id="soundrecog.luksus" $@ www/index.html
 Icon=soundrecog.png
 Terminal=false
 Type=Application

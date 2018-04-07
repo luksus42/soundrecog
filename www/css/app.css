@@ -86,9 +86,9 @@ html {
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
-.button:active{
-    background: rgba(188, 236, 93, 0.877);
-    color: rgb(255, 93, 53);
+.recording{
+    background: rgb(175, 74, 43);
+    color: rgb(31, 31, 31);
 }
 
 #result {
@@ -137,7 +137,7 @@ body {
 }
 
 [data-role="header"] {
-    height: 45px !important;
+    /*height: 45px !important;*/
     width: 100%;
 }
 
@@ -148,6 +148,8 @@ body {
 
 [data-role="back-btn"]:disabled {
     width: 40px !important;
+    background: transparent !important;
+    background-image: none !important;
 }
 
 .settingGroup {
@@ -161,4 +163,8 @@ body {
 
 input,p {
     font-size: 1.2rem !important;
+}
+
+[data-role="content"] {
+    top: 60px !important;
 }

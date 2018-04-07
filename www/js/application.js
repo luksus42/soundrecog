@@ -1,15 +1,10 @@
 var debug = false;
+var player = false;
 
-function Application(UIContext) {
-    this._uiContextClass = UIContext;
-    this._initialized = false;
-};
-Application.prototype.init = function() {
-    if (this._uiContextClass && !this._initialized) {
-        this._initialized = true;
-        var UI = new this._uiContextClass();
-        UI.init();
-    }
+var UI = new UbuntuUI();
+
+window.onload = function () {
+    UI.init();
 
     UI.pagestack.push("main");
     $("#settingsBtn").click(function () {
@@ -27,25 +22,38 @@ Application.prototype.init = function() {
         } else {
             alert("Sorry! No Web Storage support..");
         }
-        UI.pagestack.pop("settings");
+        UI.pagestack.pop("settings");true
     });
-    
-    var audio_context = new AudioContext;
-    var rec;
-    
-    navigator.getUserMedia({audio: true}, function(stream){
-        var input = audio_context.createMediaStreamSource(stream);
-        console.log('Media stream created.');
-        // Uncomment if you want the audio to feedback directly
-        //input.connect(audio_context.destination);
-        //console.log('Input connected to audio context destination.');
-        
-        rec = new Recorder(input);
-        console.log('Recorder initialised.');
-      }       
-      ,function(e) {
-        console.log('No live audio input: ' + e);
-    });
+
+    var recorder;
+    var chunks;
+
+    // request permission to access audio stream
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+        recorder = new MediaRecorder(stream);
+        // function to be called when data is received
+        recorder.ondataavailable = e => {
+            // add stream data to chunks
+            chunks.push(e.data);
+            // if recorder is 'inactive' then recording has finished
+            if (recorder.state == 'inactive') {
+                // convert stream data chunks to a 'webm' audio format as a blob
+                console.debug("RECORDER IS INACTIVE");
+                let blob = new Blob(chunks, { type: 'audio/webm' });
+
+                identify(blob, blob.size, getConfig(), function (err, httpResponse, body) {
+                    if (err) console.log(err);
+                    console.log(body);
+                });
+
+                // convert blob to URL so it can be assigned to a audio src attribute
+                if(player) {
+                    $('#debugPlayer').empty();
+                    createAudioElement(URL.createObjectURL(blob), $('#debugPlayer'));
+                }
+            }
+        };
+    }).catch(console.error);
 
     var recButton = $('#record')
 
@@ -54,31 +62,37 @@ Application.prototype.init = function() {
         e.preventDefault();
         return false;
     }, false);
-    
-    recButton.mousedown(function() {
+
+    recButton.click(function() {
         //console.log("record start");
         if(!debug) {
-            rec.clear();
-            rec.record();
-        }
-    });
-    recButton.mouseup(function() {
-        if(debug)
-            processResult(null);
-        else {
-            rec.stop();
-            rec.exportWAV(function(wav){
-                identify(wav, wav.size, getConfig(), function (err, httpResponse, body) {
-                    if (err) console.log(err);
-                    console.log(body);
-                });
-            });
-        }
-    });
-};
+            //rec.clear();
+            if(recorder.state !== 'recording') {
+                $('#record').addClass('recording');
 
-Application.prototype.initialized = function() {
-    return this._initialized;
+                $("#resultList").empty();
+                
+                chunks = [];
+                recorder.start();
+                console.debug("RECORDER STARTED");
+                
+                setTimeout(() => {
+                    // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
+                    if(recorder.state == 'recording')
+                    {
+                        recorder.stop();
+                        console.debug("RECORDER STOPPED BY TIMEOUT");
+                        $('#record').removeClass('recording');
+                    }
+                }, 10000);
+            }
+            else {
+                recorder.stop();
+                console.debug("RECORDER STOPPED");
+                $('#record').removeClass('recording');
+            }
+        }
+    });
 };
 
 function getConfig() {
@@ -93,21 +107,10 @@ function getConfig() {
     };
 }
 
-function startUserMedia(stream) {
-    var input = audio_context.createMediaStreamSource(stream);
-    console.log('Media stream created.');
-    // Uncomment if you want the audio to feedback directly
-    //input.connect(audio_context.destination);
-    //console.log('Input connected to audio context destination.');
-    
-    rec = new Recorder(input);
-    console.log('Recorder initialised.');
-};
-
 function processResult(result) {
     if(debug)
         result = {"status":{"msg":"Success","code":0,"version":"1.0"},"metadata":{"music":[{"external_ids":{"isrc":"DEUM70805429","upc":"602517837317"},"play_offset_ms":40740,"external_metadata":{"youtube":{"vid":"og4eNv9PtnQ"},"spotify":{"album":{"name":"Of All The Things","id":"5UfXvVB6oMHgnuT25R5jAs"},"artists":[{"name":"Jazzanova","id":"0nTErwSOllrcUWt3knOG2T"},{"name":"Phonte Coleman","id":"0p9LVcPuUXYtvXaouzQpAs"}],"track":{"name":"Look What You\'re Doin\' To Me","id":"7Izc0eVXAcS1JDYOqM6yzJ"}},"deezer":{"album":{"name":"Of All The Things","id":"223864"},"artists":[{"name":"Jazzanova","id":"4065"},{"name":"Phonte Coleman","id":"4438197"}],"track":{"name":"Look What You\'re Doin\' To Me","id":"2238873"}}},"artists":[{"name":"Jazzanova"}],"genres":[{"name":"Jazz"}],"title":"Look What You\'re Doin\' To Me","release_date":"2008-01-01","label":"Universal Music","duration_ms":181080,"album":{"name":"Of All The Things"},"acrid":"271d59a6f5786143b5617b3560c29976","result_from":3,"score":100}],"timestamp_utc":"2018-03-22 00:08:23"},"cost_time":1.6920001506805,"result_type":0};
-    
+
     var list = $("#resultList");
     list.empty();
 
@@ -124,7 +127,7 @@ function processResult(result) {
             return;
         }
     }
-    
+
     var dataList = result.metadata.music;
 
     var elements = ["artists", "genres", "title", "release_date", "label", "album"];
@@ -132,7 +135,7 @@ function processResult(result) {
 };
 
 function recurse( data , elements) {
-    var htmlRetStr = "<ul class='recurseObj'>"; 
+    var htmlRetStr = "<ul class='recurseObj'>";
     for (var key in data) {
         if(elements === null || elements.includes(key)) {
             if (typeof(data[key])== 'object' && data[key] != null) {
@@ -148,7 +151,7 @@ function recurse( data , elements) {
                     }
                     htmlRetStr += "</li>";
                 }
-                else {    
+                else {
                     htmlRetStr += "<li class='keyObj' ><strong>" + key + ":</strong><ul class='recurseSubObj'>";
                     htmlRetStr += recurse( data[key], elements);
                     htmlRetStr += '</ul></li>';
@@ -159,6 +162,23 @@ function recurse( data , elements) {
             }
         }
     };
-    htmlRetStr += '</ul>';    
+    htmlRetStr += '</ul>';
     return( htmlRetStr );
 };
+
+// appends an audio element to playback and download recording
+function createAudioElement(blobUrl, parent) {
+    const downloadEl = document.createElement('a');
+    downloadEl.style = 'display: block';
+    downloadEl.innerHTML = 'download';
+    downloadEl.download = 'audio.webm';
+    downloadEl.href = blobUrl;
+    const audioEl = document.createElement('audio');
+    audioEl.controls = true;
+    const sourceEl = document.createElement('source');
+    sourceEl.src = blobUrl;
+    sourceEl.type = 'audio/webm';
+    audioEl.appendChild(sourceEl);
+    parent.append(audioEl);
+    parent.append(downloadEl);
+}

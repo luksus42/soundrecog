@@ -40,8 +40,8 @@ function identify(data, length, options, cb) {
   formData.append("sample_bytes", length);
   formData.append("timestamp", timestamp);
   //formData.append("audio_format", options.audio_format);
-  //console.debug(formData);
-  
+  console.debug("SAMPLE BYTES: " + data.size);
+
   if(debug) {
     processResult(JSON.parse(null));
     return;
