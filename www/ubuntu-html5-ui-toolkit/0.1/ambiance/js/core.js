@@ -429,10 +429,13 @@ var UbuntuUI = (function() {
                         actionButton_id = actionButtons[y].querySelector('a').getAttribute('id');
 
                     actionButton.setAttribute('id', actionButton_id);
-                    // ignore "addRule not existing" for desktop debugging
-                    try {
-                        document.styleSheets[0].addRule('#' + actionButton_id + ':after', 'background-image: url("' + actionButton_icon + '");');
-                    } catch {}
+                    
+                    //document.styleSheets[1].insertRule('#' + actionButton_id + ':after', 'background-image: url("' + actionButton_icon + '");', 1);
+                    var styleEl = document.createElement('style');
+                    document.head.appendChild(styleEl);
+                    var styleSheet = styleEl.sheet;
+                    styleSheet.insertRule('#' + actionButton_id + ':after {background-image: url("' + actionButton_icon + '")');
+                    
                     newActionsBarWrapper.appendChild(actionButton);
                 }
             }
