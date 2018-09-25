@@ -1,98 +1,109 @@
 var debug = false;
 var player = false;
 
-var UI = new UbuntuUI();
+function Application(UIContext) {
+    this._uiContextClass = UIContext;
+    this._initialized = false;
+};
 
-window.onload = function () {
-    UI.init();
+Application.prototype.init = function() {
+    if (this._uiContextClass && !this._initialized) {
+        this._initialized = true;
+        UI = new this._uiContextClass();
+        UI.init();
 
-    UI.pagestack.push("main");
-    $("#settingsBtn").click(function () {
-        document.getElementById("hostInput").value = localStorage.getItem("hostInput");
-        document.getElementById("keyInput").value = localStorage.getItem("keyInput");
-        document.getElementById("secretInput").value = localStorage.getItem("secretInput");
-        UI.pagestack.push("settings");
-    });
+        UI.pagestack.push("main");
+        $("#settingsBtn").click(function () {
+            document.getElementById("hostInput").value = localStorage.getItem("hostInput");
+            document.getElementById("keyInput").value = localStorage.getItem("keyInput");
+            document.getElementById("secretInput").value = localStorage.getItem("secretInput");
+            UI.pagestack.push("settings");
+        });
 
-    $("#save").click(function () {
-        if (typeof(Storage) !== "undefined") {
-            localStorage.setItem("hostInput", document.getElementById("hostInput").value);
-            localStorage.setItem("keyInput", document.getElementById("keyInput").value);
-            localStorage.setItem("secretInput", document.getElementById("secretInput").value);
-        } else {
-            alert("Sorry! No Web Storage support..");
-        }
-        UI.pagestack.pop("settings");true
-    });
+        $("#save").click(function () {
+            if (typeof(Storage) !== "undefined") {
+                localStorage.setItem("hostInput", document.getElementById("hostInput").value);
+                localStorage.setItem("keyInput", document.getElementById("keyInput").value);
+                localStorage.setItem("secretInput", document.getElementById("secretInput").value);
+            } else {
+                alert("Sorry! No Web Storage support..");
+            }
+            UI.pagestack.pop("settings");true
+        });
 
-    var recorder;
-    var chunks;
+        var recorder;
+        var chunks;
 
-    // request permission to access audio stream
-    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-        recorder = new MediaRecorder(stream);
-        // function to be called when data is received
-        recorder.ondataavailable = e => {
-            // add stream data to chunks
-            chunks.push(e.data);
-            // if recorder is 'inactive' then recording has finished
-            if (recorder.state == 'inactive') {
-                // convert stream data chunks to a 'webm' audio format as a blob
-                console.debug("RECORDER IS INACTIVE");
-                let blob = new Blob(chunks, { type: 'audio/webm' });
+        // request permission to access audio stream
+        navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+            recorder = new MediaRecorder(stream);
+            // function to be called when data is received
+            recorder.ondataavailable = e => {
+                // add stream data to chunks
+                chunks.push(e.data);
+                // if recorder is 'inactive' then recording has finished
+                if (recorder.state == 'inactive') {
+                    // convert stream data chunks to a 'webm' audio format as a blob
+                    console.debug("RECORDER IS INACTIVE");
+                    let blob = new Blob(chunks, { type: 'audio/webm' });
 
-                identify(blob, blob.size, getConfig(), function (err, httpResponse, body) {
-                    if (err) console.log(err);
-                    console.log(body);
-                });
+                    identify(blob, blob.size, getConfig(), function (err, httpResponse, body) {
+                        if (err) console.log(err);
+                        console.log(body);
+                    });
 
-                // convert blob to URL so it can be assigned to a audio src attribute
-                if(player) {
-                    $('#debugPlayer').empty();
-                    createAudioElement(URL.createObjectURL(blob), $('#debugPlayer'));
+                    // convert blob to URL so it can be assigned to a audio src attribute
+                    if(player) {
+                        $('#debugPlayer').empty();
+                        createAudioElement(URL.createObjectURL(blob), $('#debugPlayer'));
+                    }
+                }
+            };
+        }).catch(console.error);
+
+        var recButton = $('#record')
+
+        // prevent openening contextmenu
+        // recButton.bind('contextmenu', function(e) {
+        //     e.preventDefault();
+        //     return false;
+        // }, false);
+
+        recButton.click(function() {
+            //console.log("record start");
+            if(!debug) {
+                //rec.clear();
+                if(recorder.state !== 'recording') {
+                    $('#record').addClass('recording');
+
+                    $("#resultList").empty();
+                    
+                    chunks = [];
+                    recorder.start();
+                    console.debug("RECORDER STARTED");
+                    
+                    setTimeout(() => {
+                        // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
+                        if(recorder.state == 'recording')
+                        {
+                            recorder.stop();
+                            console.debug("RECORDER STOPPED BY TIMEOUT");
+                            $('#record').removeClass('recording');
+                        }
+                    }, 10000);
+                }
+                else {
+                    recorder.stop();
+                    console.debug("RECORDER STOPPED");
+                    $('#record').removeClass('recording');
                 }
             }
-        };
-    }).catch(console.error);
+        });
+    }
+};
 
-    var recButton = $('#record')
-
-    // prevent openening contextmenu
-    recButton.bind('contextmenu', function(e) {
-        e.preventDefault();
-        return false;
-    }, false);
-
-    recButton.click(function() {
-        //console.log("record start");
-        if(!debug) {
-            //rec.clear();
-            if(recorder.state !== 'recording') {
-                $('#record').addClass('recording');
-
-                $("#resultList").empty();
-                
-                chunks = [];
-                recorder.start();
-                console.debug("RECORDER STARTED");
-                
-                setTimeout(() => {
-                    // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
-                    if(recorder.state == 'recording')
-                    {
-                        recorder.stop();
-                        console.debug("RECORDER STOPPED BY TIMEOUT");
-                        $('#record').removeClass('recording');
-                    }
-                }, 10000);
-            }
-            else {
-                recorder.stop();
-                console.debug("RECORDER STOPPED");
-                $('#record').removeClass('recording');
-            }
-        }
-    });
+Application.prototype.initialized = function() {
+    return this._initialized;
 };
 
 function getConfig() {
@@ -107,12 +118,17 @@ function getConfig() {
     };
 }
 
-function processResult(result) {
+function processResult(result, requestError) {
     if(debug)
         result = {"status":{"msg":"Success","code":0,"version":"1.0"},"metadata":{"music":[{"external_ids":{"isrc":"DEUM70805429","upc":"602517837317"},"play_offset_ms":40740,"external_metadata":{"youtube":{"vid":"og4eNv9PtnQ"},"spotify":{"album":{"name":"Of All The Things","id":"5UfXvVB6oMHgnuT25R5jAs"},"artists":[{"name":"Jazzanova","id":"0nTErwSOllrcUWt3knOG2T"},{"name":"Phonte Coleman","id":"0p9LVcPuUXYtvXaouzQpAs"}],"track":{"name":"Look What You\'re Doin\' To Me","id":"7Izc0eVXAcS1JDYOqM6yzJ"}},"deezer":{"album":{"name":"Of All The Things","id":"223864"},"artists":[{"name":"Jazzanova","id":"4065"},{"name":"Phonte Coleman","id":"4438197"}],"track":{"name":"Look What You\'re Doin\' To Me","id":"2238873"}}},"artists":[{"name":"Jazzanova"}],"genres":[{"name":"Jazz"}],"title":"Look What You\'re Doin\' To Me","release_date":"2008-01-01","label":"Universal Music","duration_ms":181080,"album":{"name":"Of All The Things"},"acrid":"271d59a6f5786143b5617b3560c29976","result_from":3,"score":100}],"timestamp_utc":"2018-03-22 00:08:23"},"cost_time":1.6920001506805,"result_type":0};
 
     var list = $("#resultList");
     list.empty();
+
+    if(requestError) {
+        list.append("<li>requestError: "+ result +"</li>");
+        return;
+    }
 
     // in case of an error
     if(result.status) {
