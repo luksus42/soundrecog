@@ -97,6 +97,7 @@ html {
     line-height: 2.2rem;
     line-break: normal;
     overflow: auto;
+    width: min-content;
 }
 
 ul {
@@ -167,4 +168,5 @@ input,p {
 
 [data-role="content"] {
     top: 60px !important;
+    background: #f7f7f7 !important;
 }

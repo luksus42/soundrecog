@@ -54,6 +54,8 @@ function identify(data, length, options, cb) {
     contentType: false,
     processData :false
   }).done(function(data){
-        processResult(JSON.parse(data));
-    });
+    processResult(JSON.parse(data), false);
+  }).fail(function(data){
+    processResult(JSON.stringify(data), true);
+  });
 }
