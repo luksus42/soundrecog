@@ -97,7 +97,7 @@ html {
     line-height: 2.2rem;
     line-break: normal;
     overflow: auto;
-    width: min-content;
+    width: 100%;
 }
 
 ul {
