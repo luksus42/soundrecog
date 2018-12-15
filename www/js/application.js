@@ -36,7 +36,11 @@ Application.prototype.init = function() {
 
         // request permission to access audio stream
         navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-            recorder = new MediaRecorder(stream);
+            try {
+                recorder = new MediaRecorder(stream);
+            } catch (e) {
+                console.error("Exception on creating MediaRecorder: " + e);
+            }
             // function to be called when data is received
             recorder.ondataavailable = e => {
                 // add stream data to chunks
@@ -59,7 +63,9 @@ Application.prototype.init = function() {
                     }
                 }
             };
-        }).catch(console.error);
+        }).catch(function(err){
+            console.debug("ERROR on creating UserMedia: " + err);
+        });
 
         var recButton = $('#record')
 
