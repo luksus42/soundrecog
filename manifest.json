@@ -4,7 +4,7 @@
     "architecture": "all",
     "title": "SoundRecog",
     "hooks": {
-        "SoundRecog": {
+        "soundrecog": {
             "apparmor": "soundrecog.apparmor",
             "desktop": "soundrecog.desktop"
         }
