@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=SoundRecog
-Exec=webapp-container --app-id="soundrecog.luksus" --local-content-can-access-remote-urls $@ www/index.html
-Icon=soundrecog.png
-Terminal=false
-Type=Application
-X-Ubuntu-Touch=true
-

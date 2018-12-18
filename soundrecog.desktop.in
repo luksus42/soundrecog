@@ -1,0 +1,7 @@
+[Desktop Entry]
+_Name=SoundRecog
+Exec=soundrecog
+Icon=assets/soundrecog.png
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true

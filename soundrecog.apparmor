@@ -1,10 +1,8 @@
 {
-    "template": "ubuntu-webapp",
     "policy_groups": [
-        "microphone",
-        "audio",
         "networking",
-        "webview"
+        "webview",
+        "microphone"
     ],
     "policy_version": 16.04
 }
