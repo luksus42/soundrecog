@@ -79,6 +79,12 @@ Application.prototype.init = function() {
             //console.log("record start");
             if(!debug) {
                 //rec.clear();
+                
+                if(needSetup()) {
+                    processResult("Please enter settings first!", true);
+                    return;
+                }
+
                 if(recorder.state !== 'recording') {
                     $('#record').addClass('recording');
 
@@ -111,6 +117,12 @@ Application.prototype.init = function() {
 Application.prototype.initialized = function() {
     return this._initialized;
 };
+
+function needSetup() {
+    return  !localStorage.getItem("hostInput") ||
+            !localStorage.getItem("keyInput") ||
+            !localStorage.getItem("secretInput");
+}
 
 function getConfig() {
     return {
@@ -162,7 +174,7 @@ function recurse( data , elements) {
         if(elements === null || elements.includes(key)) {
             if (typeof(data[key])== 'object' && data[key] != null) {
                 if(data[key].name)
-                    htmlRetStr += "<li><strong>"+key+":</strong> "+ data[key].name +"</li>";
+                    htmlRetStr += "<li><strong>"+key+":</strong> "+ data[key].name.charAt(0).toUpperCase() +"</li>";
                 else if(data[key].length !== "NaN") {
                     var arr = data[key];
                     htmlRetStr += "<li><strong>"+key+":</strong> ";

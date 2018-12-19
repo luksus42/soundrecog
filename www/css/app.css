@@ -1,42 +1,70 @@
-.button-glow {
-    -webkit-animation-duration: 3s;
-    animation-duration: 3s;
-    -webkit-animation-iteration-count: infinite;
-    animation-iteration-count: infinite;
-    -webkit-animation-name: glowing-action;
-    animation-name: glowing-action;
+@media screen and (orientation:portrait) {
+    .button {
+        width: inherit;
+        height: 100%;
+        max-height: 200px;
+        max-width: 200px;
+        color: #FFF;
+        background-color: rgb(165, 222, 55);
+        border-color: #A5DE37;
+        border-radius: 100%;
+        font-weight: 300;
+        font-size: 36px;
+        font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        text-decoration: none;
+        text-align: center;
+        line-height: 60px;
+        margin-left: -10px;
+        margin-bottom: 20px;
+        display: inline-block;
+        cursor: pointer;
+        border: none;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-transition-property: all;
+        transition-property: all;
+        -webkit-transition-duration: .3s;
+        transition-duration: .3s;
+        -webkit-appearance: button;
+        text-transform: none;
+        overflow: visible;
+    }
 }
 
-.button {
-    width: inherit;
-    height: 100%;
-    max-height: 200px;
-    max-width: 200px;
-    color: #FFF;
-    background-color: rgb(165, 222, 55);
-    border-color: #A5DE37;
-    border-radius: 100%;
-    font-weight: 300;
-    font-size: 36px;
-    font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-    text-decoration: none;
-    text-align: center;
-    line-height: 60px;
-    margin-left: -10px;
-    margin-bottom: 20px;
-    display: inline-block;
-    cursor: pointer;
-    border: none;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    -webkit-transition-property: all;
-    transition-property: all;
-    -webkit-transition-duration: .3s;
-    transition-duration: .3s;
-    -webkit-appearance: button;
-    text-transform: none;
-    overflow: visible;
+@media screen and (orientation:landscape) {
+
+    .button {
+        width: 95%;
+        height: 85%;
+        bottom: 2rem;
+        max-height: 200px;
+        color: #FFF;
+        background-color: rgb(165, 222, 55);
+        border-color: #A5DE37;
+        /* border-radius: 100%; */
+        font-weight: 300;
+        font-size: 36px;
+        font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        text-decoration: none;
+        text-align: center;
+        line-height: 60px;
+        /*margin-left: -10px;
+        margin-bottom: 20px; */
+        display: inline-block;
+        cursor: pointer;
+        border: none;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-transition-property: all;
+        transition-property: all;
+        -webkit-transition-duration: .3s;
+        transition-duration: .3s;
+        -webkit-appearance: button;
+        text-transform: none;
+        overflow: visible;
+    }
 }
 
 .fa {
@@ -51,26 +79,35 @@
     content: "\f130";
 }
 
+.button-glow {
+    -webkit-animation-duration: 3s;
+    animation-duration: 3s;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-name: glowing-action;
+    animation-name: glowing-action;
+}
+
 @-webkit-keyframes glowing-action {
     from {
-      -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.3);
-              box-shadow: 0 0 0 rgba(165, 222, 55, 0.3); }
-    50% {
-      -webkit-box-shadow: 0 0 20px rgba(165, 222, 55, 0.8);
-              box-shadow: 0 0 20px rgba(165, 222, 55, 0.8); }
+      -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.4);
+              box-shadow: 0 0 0 rgba(165, 222, 55, 0.4); }
+    80% {
+      -webkit-box-shadow: 0 0 20px rgba(165, 222, 55, 0.9);
+              box-shadow: 0 0 20px rgba(165, 222, 55, 0.9); }
     to {
-      -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.3);
-              box-shadow: 0 0 0 rgba(165, 222, 55, 0.3); } }
+      -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.4);
+              box-shadow: 0 0 0 rgba(165, 222, 55, 0.4); } }
   @keyframes glowing-action {
     from {
-      -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.3);
-              box-shadow: 0 0 0 rgba(165, 222, 55, 0.3); }
-    50% {
-      -webkit-box-shadow: 0 0 20px rgba(165, 222, 55, 0.8);
-              box-shadow: 0 0 20px rgba(165, 222, 55, 0.8); }
+      -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.4);
+              box-shadow: 0 0 0 rgba(165, 222, 55, 0.4); }
+    80% {
+      -webkit-box-shadow: 0 0 20px rgba(165, 222, 55, 0.9);
+              box-shadow: 0 0 20px rgba(165, 222, 55, 0.9); }
     to {
-      -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.3);
-              box-shadow: 0 0 0 rgba(165, 222, 55, 0.3); } }
+      -webkit-box-shadow: 0 0 0 rgba(165, 222, 55, 0.4);
+              box-shadow: 0 0 0 rgba(165, 222, 55, 0.4); } }
 
 .container {
     margin-top: 0.8rem;
@@ -87,8 +124,8 @@ html {
 }
 
 .recording{
-    background: rgb(175, 74, 43);
-    color: rgb(31, 31, 31);
+    background: rgb(70, 70, 70);
+    color: rgb(255, 0, 0);
 }
 
 #result {
@@ -98,6 +135,7 @@ html {
     line-break: normal;
     overflow: auto;
     width: 100%;
+    color: #b5b5b5 !important;
 }
 
 ul {
@@ -127,7 +165,7 @@ ul {
 }
 
 body {
-    background: #f7f7f7 !important;
+    background: #201a1a !important;
 }
 
 [data-role="header"]:after {
@@ -147,10 +185,15 @@ body {
     padding-left: 28px !important;
 }
 
-[data-role="back-btn"]:disabled {
+/* [data-role="back-btn"]:disabled {
     width: 40px !important;
     background: transparent !important;
     background-image: none !important;
+} */
+
+[data-role="back-btn"]:disabled + [data-role="tabtitle"] {
+    width: calc(100% - 100px) !important;
+    margin-left: -2px;
 }
 
 .settingGroup {
@@ -166,7 +209,19 @@ input,p {
     font-size: 1.2rem !important;
 }
 
+h1, p {
+    color: #b5b5b5 !important;
+}
+
 [data-role="content"] {
     top: 60px !important;
-    background: #f7f7f7 !important;
+    background: #201a1a !important;
+}
+
+[data-role="back-btn"],
+[data-role="header"],
+[data-role="actions"],
+[data-role="tabtitle"] {
+    background-color: #201a1a !important;
+    color: #b5b5b5 !important;
 }
