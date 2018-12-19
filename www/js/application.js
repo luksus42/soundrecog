@@ -1,6 +1,11 @@
 var debug = false;
 var player = false;
 
+// external services
+var deezerUrl = "https://www.deezer.com/en/track/";
+var spotifyUrl = "https://open.spotify.com/track/";
+var youtubeUrl = "https://www.youtube.com/watch?v=";
+
 function Application(UIContext) {
     this._uiContextClass = UIContext;
     this._initialized = false;
@@ -77,9 +82,9 @@ Application.prototype.init = function() {
 
         recButton.click(function() {
             //console.log("record start");
-            if(!debug) {
+            //if(!debug) {
                 //rec.clear();
-                
+                debug         
                 if(needSetup()) {
                     processResult("Please enter settings first!", true);
                     return;
@@ -89,6 +94,7 @@ Application.prototype.init = function() {
                     $('#record').addClass('recording');
 
                     $("#resultList").empty();
+                    $("#externalLinks").empty();
                     
                     chunks = [];
                     recorder.start();
@@ -109,7 +115,7 @@ Application.prototype.init = function() {
                     console.debug("RECORDER STOPPED");
                     $('#record').removeClass('recording');
                 }
-            }
+            //}
         });
     }
 };
@@ -166,7 +172,33 @@ function processResult(result, requestError) {
 
     var elements = ["artists", "genres", "title", "release_date", "label", "album"];
     list.append(recurse(dataList[0], elements));
+
+    // add external service links
+    processExternalMetadata(dataList[0].external_metadata);
 };
+
+function processExternalMetadata(externalMetadata)
+{
+    var element = $("#externalLinks");
+    element.empty();
+
+    // deezer
+    deezerId = externalMetadata.deezer.track.id;
+    if(deezerId) {
+        element.append("<a href='"+deezerUrl+deezerId+"' target='_blank'><div class='serviceLink' id='deezer' /></a>");
+    }
+    // spotify
+    spotifyId = externalMetadata.spotify.track.id;
+    if(spotifyId) {
+        element.append("<a href='"+spotifyUrl+spotifyId+"' target='_blank'><div class='serviceLink' id='spotify' /></a>");
+    }
+    // youtube
+    youtubeId = externalMetadata.youtube.vid;
+    if(youtubeId) {
+        element.append("<a href='"+youtubeUrl+youtubeId+"' target='_blank'><div class='serviceLink' id='youtube' /></a>");
+    }
+
+}
 
 function recurse( data , elements) {
     var htmlRetStr = "<ul class='recurseObj'>";
@@ -174,10 +206,10 @@ function recurse( data , elements) {
         if(elements === null || elements.includes(key)) {
             if (typeof(data[key])== 'object' && data[key] != null) {
                 if(data[key].name)
-                    htmlRetStr += "<li><strong>"+key+":</strong> "+ data[key].name.charAt(0).toUpperCase() +"</li>";
+                    htmlRetStr += "<li><strong>"+capitalizeFirstLetter(key)+":</strong> "+ data[key].name +"</li>";
                 else if(data[key].length !== "NaN") {
                     var arr = data[key];
-                    htmlRetStr += "<li><strong>"+key+":</strong> ";
+                    htmlRetStr += "<li><strong>"+capitalizeFirstLetter(key)+":</strong> ";
                     for(var elem in arr) {
                         htmlRetStr += arr[elem].name;
                         if(parseInt(elem)+1 < arr.length)
@@ -186,7 +218,7 @@ function recurse( data , elements) {
                     htmlRetStr += "</li>";
                 }
                 else {
-                    htmlRetStr += "<li class='keyObj' ><strong>" + key + ":</strong><ul class='recurseSubObj'>";
+                    htmlRetStr += "<li class='keyObj' ><strong>" + capitalizeFirstLetter(key) + ":</strong><ul class='recurseSubObj'>";
                     htmlRetStr += recurse( data[key], elements);
                     htmlRetStr += '</ul></li>';
                 }
@@ -215,4 +247,8 @@ function createAudioElement(blobUrl, parent) {
     audioEl.appendChild(sourceEl);
     parent.append(audioEl);
     parent.append(downloadEl);
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
