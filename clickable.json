@@ -1,4 +1,7 @@
 {
-  "template": "cmake",
-  "kill": "soundrecog"
+  "template": "pure",
+  "kill": "webapp-container",
+  "ignore": [
+    ".git"
+  ]
 }
