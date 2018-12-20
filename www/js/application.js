@@ -1,4 +1,4 @@
-var debug = false;
+var simulate = true;
 var player = false;
 
 // external services
@@ -33,7 +33,7 @@ Application.prototype.init = function() {
             } else {
                 alert("Sorry! No Web Storage support..");
             }
-            UI.pagestack.pop("settings");true
+            UI.pagestack.pop("settings");
         });
 
         var recorder;
@@ -56,10 +56,17 @@ Application.prototype.init = function() {
                     console.debug("RECORDER IS INACTIVE");
                     let blob = new Blob(chunks, { type: 'audio/webm' });
 
-                    identify(blob, blob.size, getConfig(), function (err, httpResponse, body) {
-                        if (err) console.log(err);
-                        console.log(body);
-                    });
+                    if(!simulate) {
+                        identify(blob, blob.size, getConfig(), function (err, httpResponse, body) {
+                            if (err) console.log(err);
+                            console.log(body);
+                        });
+                    } else {
+                        $('#result').addClass('spinner');
+                        setTimeout(() => {
+                            processResult(null, null);
+                        }, 3000);
+                    }
 
                     // convert blob to URL so it can be assigned to a audio src attribute
                     if(player) {
@@ -74,18 +81,12 @@ Application.prototype.init = function() {
 
         var recButton = $('#record')
 
-        // prevent openening contextmenu
-        // recButton.bind('contextmenu', function(e) {
-        //     e.preventDefault();
-        //     return false;
-        // }, false);
-
         recButton.click(function() {
             //console.log("record start");
-            //if(!debug) {
+            //if(!simulate) {
                 //rec.clear();
-                debug         
-                if(needSetup()) {
+                        
+                if(!simulate && needSetup()) {
                     processResult("Please enter settings first!", true);
                     return;
                 }
@@ -108,12 +109,13 @@ Application.prototype.init = function() {
                             console.debug("RECORDER STOPPED BY TIMEOUT");
                             $('#record').removeClass('recording');
                         }
-                    }, 10000);
+                    }, simulate ? 3000 : 10000);
                 }
                 else {
                     recorder.stop();
                     console.debug("RECORDER STOPPED");
                     $('#record').removeClass('recording');
+                    $('#result').addClass('spinner');
                 }
             //}
         });
@@ -132,18 +134,21 @@ function needSetup() {
 
 function getConfig() {
     return {
-        host: localStorage.getItem("hostInput"),
+        host: simulate ? "simulate" : localStorage.getItem("hostInput"),
         endpoint: '/v1/identify',
         signature_version: 1,
         data_type:'audio',
         secure: true,
-        access_key: localStorage.getItem("keyInput"),
-        access_secret: localStorage.getItem("secretInput"),
+        access_key: simulate ? "simulate" : localStorage.getItem("keyInput"),
+        access_secret: simulate ? "simulate" : localStorage.getItem("secretInput"),
     };
 }
 
 function processResult(result, requestError) {
-    if(debug)
+    // we have a result -> remove spinner
+    $('#result').removeClass('spinner');
+
+    if(simulate)
         result = {"status":{"msg":"Success","code":0,"version":"1.0"},"metadata":{"music":[{"external_ids":{"isrc":"DEUM70805429","upc":"602517837317"},"play_offset_ms":40740,"external_metadata":{"youtube":{"vid":"og4eNv9PtnQ"},"spotify":{"album":{"name":"Of All The Things","id":"5UfXvVB6oMHgnuT25R5jAs"},"artists":[{"name":"Jazzanova","id":"0nTErwSOllrcUWt3knOG2T"},{"name":"Phonte Coleman","id":"0p9LVcPuUXYtvXaouzQpAs"}],"track":{"name":"Look What You\'re Doin\' To Me","id":"7Izc0eVXAcS1JDYOqM6yzJ"}},"deezer":{"album":{"name":"Of All The Things","id":"223864"},"artists":[{"name":"Jazzanova","id":"4065"},{"name":"Phonte Coleman","id":"4438197"}],"track":{"name":"Look What You\'re Doin\' To Me","id":"2238873"}}},"artists":[{"name":"Jazzanova"}],"genres":[{"name":"Jazz"}],"title":"Look What You\'re Doin\' To Me","release_date":"2008-01-01","label":"Universal Music","duration_ms":181080,"album":{"name":"Of All The Things"},"acrid":"271d59a6f5786143b5617b3560c29976","result_from":3,"score":100}],"timestamp_utc":"2018-03-22 00:08:23"},"cost_time":1.6920001506805,"result_type":0};
 
     var list = $("#resultList");
@@ -224,7 +229,7 @@ function recurse( data , elements) {
                 }
             }
             else {
-                htmlRetStr += ("<li class='keyStr'><strong>" + key + ': </strong>' + data[key] + '</li>' );
+                htmlRetStr += ("<li class='keyStr'><strong>" + capitalizeFirstLetter(key) + ': </strong>' + data[key] + '</li>' );
             }
         }
     };
