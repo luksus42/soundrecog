@@ -1,143 +1,145 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>An Ubuntu HTML5 application</title>
-    <meta name="description" content="An Ubuntu HTML5 application">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <meta charset="utf-8">
+  <title>An Ubuntu HTML5 application</title>
+  <meta name="description" content="An Ubuntu HTML5 application">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
-    <!--
-         Application stylesheets
-         Include your own stylesheets below to style your application.
-      -->
-    <link rel="stylesheet" href="css/app.css" type="text/css" />
-    <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+  <!--
+       Application stylesheets
+       Include your own stylesheets below to style your application.
+    -->
+  <link rel="stylesheet" href="css/app.css" type="text/css"/>
+  <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
 
-    <!--
-        Ubuntu UI javascript imports - Ambiance theme
-        Ubuntu provides building blocks that you can use in your application. For more information, you can check out the documentation at http://design.ubuntu.com/apps.
-     -->
-    <!-- Ubuntu UI Style imports - Ambiance theme -->
-    <link href="ubuntu-html5-ui-toolkit/0.1/ambiance/css/appTemplate.css" rel="stylesheet" type="text/css" />
+  <!--
+      Ubuntu UI javascript imports - Ambiance theme
+      Ubuntu provides building blocks that you can use in your application. For more information, you can check out the documentation at http://design.ubuntu.com/apps.
+   -->
+  <!-- Ubuntu UI Style imports - Ambiance theme -->
+  <link href="ubuntu-html5-ui-toolkit/0.1/ambiance/css/appTemplate.css" rel="stylesheet" type="text/css"/>
 
-    <script src="js/jquery/jquery.min.js"></script>
+  <script src="js/jquery/jquery.min.js"></script>
 
-    <script src="js/cryptoJS/core.js"></script>
-    <script src="js/cryptoJS/sha1.js"></script>
-    <script src="js/cryptoJS/hmac.js"></script>
-    <script src="js/cryptoJS/enc-base64.js"></script>
+  <script src="js/cryptoJS/core.js"></script>
+  <script src="js/cryptoJS/sha1.js"></script>
+  <script src="js/cryptoJS/hmac.js"></script>
+  <script src="js/cryptoJS/enc-base64.js"></script>
 
-    <!-- application js imports -->
-    <script src="js/acr-api.js"></script>
-    <script src="js/application.js"></script>
-    <script src="js/ui.js"></script>
+  <!-- application js imports -->
+  <script src="js/acr-api.js"></script>
+  <script src="js/application.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/apiResponse.js"></script>
 
-    <!-- External javascript imports -->
-    <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/core.js"></script>
-    <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/buttons.js"></script>
-    <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/dialogs.js"></script>
-    <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/page.js"></script>
-    <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/pagestacks.js"></script>
-    
-    <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/tab.js"></script>
-    <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/tabs.js"></script>
-    <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/list.js"></script>
-    <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/toolbars.js"></script>
-    <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/option-selector.js"></script> 
+  <!-- External javascript imports -->
+  <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/core.js"></script>
+  <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/buttons.js"></script>
+  <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/dialogs.js"></script>
+  <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/page.js"></script>
+  <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/pagestacks.js"></script>
+
+  <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/tab.js"></script>
+  <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/tabs.js"></script>
+  <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/list.js"></script>
+  <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/toolbars.js"></script>
+  <script src="ubuntu-html5-ui-toolkit/0.1/ambiance/js/option-selector.js"></script>
 
 </head>
 <body>
-    <div data-role="mainview">
+<div data-role="mainview">
 
-            <header data-role="header">
-                </header>
+  <header data-role="header">
+  </header>
 
-        <div data-role="content">
-        
-            <div data-role="pagestack" id="pages">
-                <div data-role="page" id="main" data-title="SoundRecog">
+  <div data-role="content">
 
-                    <footer data-role="footer" id="toolbar" class="revealed">
-                            <nav>
-                                <ul>
-                                    <li data-role="tabitem" data-page="settingsTab">
-                                        <a href="#" id="settingsBtn">
-                                            <img src="img/ubuntu-mobile/actions/scalable/settings.svg" alt="no pic"/>
-                                            <span>Settings</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </footer>
+    <div data-role="pagestack" id="pages">
+      <div data-role="page" id="main" data-title="SoundRecog">
 
-                    <div id="appContent">
-                        <div class="container">
-                        </div>
+        <footer data-role="footer" id="toolbar" class="revealed">
+          <nav>
+            <ul>
+              <li data-role="tabitem" data-page="settingsTab">
+                <a href="#" id="settingsBtn">
+                  <img src="img/ubuntu-mobile/actions/scalable/settings.svg" alt="no pic"/>
+                  <span>Settings</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </footer>
 
-                        <div class="container">
-                            <div id="result">
-                                <p id="timer"></p>
-                                <ul id="resultList">
-                                </ul>
-                            </div>
-                            <div id="debugPlayer"></div>
-                        </div>
-                        <div class="container">
-                            <div id="externalLinks"></div>
-                        </div>
+        <div id="appContent">
+          <div class="container">
+          </div>
 
-                        <div class="container">
-
-                            <button id="record" class="button">
-                                <div class="button-text"><i class="fa fa-microphone"></i></div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div data-role="page" id="settings" data-title="settings">
-                    
-                    <footer data-role="footer" id="settingsToolbar" class="revealed">
-                        <nav>
-                            <ul>
-                                <li>
-                                    <a href="#" id="save">
-                                        <img src="img/ubuntu-mobile/actions/scalable/save.svg" alt="no pic"/>
-                                        <span>save</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </footer>
-
-                    <div class="settingGroup">
-                        <h1>ACRCloud API:</h1>
-                        <p id="host" style="margin: 15px 0;display:block">
-                            <label for="host">host: </label>
-                            <input type="url" id="hostInput" placeholder="acrcloud api host" value="acrcloud api host" style="width:100%">
-                        </p>
-                        <p id="key" style="margin: 15px 0;display:block">
-                            <label for="key">key: </label>
-                            <input type="text" id="keyInput" placeholder="acrcloud api key" value="acrcloud api key" style="width:100%">
-                        </p>
-                        <p id="secret" style="margin: 15px 0;display:block">
-                            <label for="secret">secret: </label>
-                            <input type="text" id="secretInput" placeholder="acrcloud api secret" value="acrcloud api secret" style="width:100%">
-                        </p>
-                    </div>
-
-                    
-                    <div class="container">
-                        <div id="credits">
-                            <div>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
-                        </div>
-                    </div>
-
-                </div>  
+          <div class="container">
+            <div id="result">
+              <p id="timer"></p>
+              <ul id="resultList">
+              </ul>
             </div>
+            <div id="debugPlayer"></div>
+          </div>
+          <div class="container">
+            <div id="externalLinks"></div>
+          </div>
 
-        </div><!-- End of Content-->
+          <div class="container">
+
+            <button id="record" class="button">
+              <div class="button-text"><i class="fa fa-microphone"></i></div>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div data-role="page" id="settings" data-title="settings">
+
+        <footer data-role="footer" id="settingsToolbar" class="revealed">
+          <nav>
+            <ul>
+              <li>
+                <a href="#" id="save">
+                  <img src="img/ubuntu-mobile/actions/scalable/save.svg" alt="no pic"/>
+                  <span>save</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </footer>
+
+        <div class="settingGroup">
+          <h1>ACRCloud API:</h1>
+          <p id="host" style="margin: 15px 0;display:block">
+            <label for="host">host: </label>
+            <input type="url" id="hostInput" placeholder="acrcloud api host" value="acrcloud api host" style="width:100%">
+          </p>
+          <p id="key" style="margin: 15px 0;display:block">
+            <label for="key">key: </label>
+            <input type="text" id="keyInput" placeholder="acrcloud api key" value="acrcloud api key" style="width:100%">
+          </p>
+          <p id="secret" style="margin: 15px 0;display:block">
+            <label for="secret">secret: </label>
+            <input type="text" id="secretInput" placeholder="acrcloud api secret" value="acrcloud api secret" style="width:100%">
+          </p>
+        </div>
+
+
+        <div class="container">
+          <div id="credits">
+            <div>Icons made by <a href="https://www.freepik.com/" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a
+                href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
+          </div>
+        </div>
+
+      </div>
     </div>
+
+  </div><!-- End of Content-->
+</div>
 </body>
 </html>
 
