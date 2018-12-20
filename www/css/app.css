@@ -3,7 +3,7 @@
         width: 50%;
         height:0;
         padding-bottom: 50%;
-        margin-bottom: 2rem;
+        margin-bottom: 3rem;
         color: #FFF;
         background-color: rgb(165, 222, 55);
         border-radius: 100%;
@@ -24,7 +24,7 @@
     .button-text {
         float:left;
         width:100%;
-        padding-top:53%;
+        padding-top:50%;
         font-weight: 300;
         font-size: 36px;
         line-height:1em;
@@ -37,8 +37,6 @@
 
     .button {
         width: 95%;
-        /* height: 85%; */
-        bottom: 2rem;
         max-height: 100px;
         color: #FFF;
         background-color: rgb(165, 222, 55);
@@ -76,6 +74,20 @@
 
 .fa-microphone:before {
     content: "\f130";
+}
+
+#microphone {
+    background-size: contain;
+    height: 3.5rem;
+    margin: 10px 0px;
+}
+
+.mic {
+    background: url(../img/microphone.svg) no-repeat center #00000000;
+}
+
+.mic-rec {
+    background: url(../img/microphone_rec.svg) no-repeat center #00000000;
 }
 
 .button-glow {

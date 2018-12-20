@@ -15,7 +15,7 @@ var youtubeUrl = "https://www.youtube.com/watch?v=";
 function Application(UIContext) {
   this._uiContextClass = UIContext;
   this._initialized = false;
-};
+}
 
 Application.prototype.init = function () {
   if (this._uiContextClass && !this._initialized) {
@@ -98,6 +98,8 @@ Application.prototype.init = function () {
       }
 
       if (recorder.state !== 'recording') {
+
+        $("#microphone").removeClass("mic").addClass("mic-rec");
         recButton.addClass('recording');
         recButton.addClass("button-glow");
 
@@ -122,17 +124,13 @@ Application.prototype.init = function () {
           timerElem.html(counter);
 
           if (counter < 1 && recorder.state == 'recording') {
-            timerElem.hide();
-            timerElem.empty();
-            clearInterval(timerId);
-            recorder.stop();
+            stopRecorderAddtionalStuff(timerId, recorder);
             console.debug("RECORDER STOPPED BY TIMEOUT");
-            recButton.removeClass('recording');
-            recButton.removeClass("button-glow");
           }
         }, 1000);
       } else {
         stopRecorderAddtionalStuff(timerId, recorder);
+        console.debug("RECORDER STOPPED");
         $('#result').addClass('spinner');
       }
     });
@@ -151,9 +149,11 @@ function stopRecorderAddtionalStuff(timerId, recorder) {
   timerElem.empty();
   clearInterval(timerId);
   recorder.stop();
-  console.debug("RECORDER STOPPED");
+  recButton.removeClass('recording');
   recButton.removeClass('recording');
   recButton.removeClass("button-glow");
+  recButton.prop("disabled",true);
+  $("#microphone").removeClass("mic-rec").addClass("mic");
 }
 
 function needSetup() {
@@ -177,6 +177,7 @@ function getConfig() {
 function processResult(result, requestError) {
   // we have a result -> remove spinner
   $('#result').removeClass('spinner');
+  $('#record').prop("disabled", false);
 
     if(simulate)
         result = simulationResult;
