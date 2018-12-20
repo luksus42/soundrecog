@@ -1,4 +1,4 @@
-var simulate = true;
+var simulate = false;
 var player = false;
 
 // external services
