@@ -58,6 +58,9 @@ Application.prototype.init = function() {
                 chunks.push(e.data);
                 // if recorder is 'inactive' then recording has finished
                 if (recorder.state == 'inactive') {
+
+                    $('#result').addClass('spinner');
+
                     // convert stream data chunks to a 'webm' audio format as a blob
                     console.debug("RECORDER IS INACTIVE");
                     let blob = new Blob(chunks, { type: 'audio/webm' });
@@ -68,7 +71,6 @@ Application.prototype.init = function() {
                             console.log(body);
                         });
                     } else {
-                        $('#result').addClass('spinner');
                         setTimeout(() => {
                             processResult(null, null);
                         }, 3000);
@@ -86,6 +88,7 @@ Application.prototype.init = function() {
         });
 
         var recButton = $('#record');
+        var timerId;
 
         recButton.click(function() {
 
@@ -112,10 +115,10 @@ Application.prototype.init = function() {
                 timerElem.show();
 
                 // start timer
-                var timerId = setInterval(() => {
+                timerId = setInterval(() => {
                     // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
                     counter--;
-                    console.debug("timer: " + counter);
+                    //console.debug("timer: " + counter);
                     timerElem.html(counter);
 
                     if(counter < 1 && recorder.state == 'recording')
@@ -131,9 +134,7 @@ Application.prototype.init = function() {
                 }, 1000);
             }
             else {
-                recorder.stop();
-                console.debug("RECORDER STOPPED");
-                recButton.removeClass('recording');
+                stopRecorderAddtionalStuff(timerId, recorder);
                 $('#result').addClass('spinner');
             }
         });
@@ -143,6 +144,19 @@ Application.prototype.init = function() {
 Application.prototype.initialized = function() {
     return this._initialized;
 };
+
+function stopRecorderAddtionalStuff(timerId, recorder) {
+    var timerElem = $("#timer");
+    var recButton = $('#record');
+
+    timerElem.hide();
+    timerElem.empty();
+    clearInterval(timerId);
+    recorder.stop();
+    console.debug("RECORDER STOPPED");
+    recButton.removeClass('recording');
+    recButton.removeClass("button-glow");
+}
 
 function needSetup() {
     return  !localStorage.getItem("hostInput") ||
