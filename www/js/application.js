@@ -85,59 +85,57 @@ Application.prototype.init = function() {
             console.debug("ERROR on creating UserMedia: " + err);
         });
 
-        var recButton = $('#record')
+        var recButton = $('#record');
 
         recButton.click(function() {
-            //console.log("record start");
-            //if(!simulate) {
-                //rec.clear();
-                        
-                if(!simulate && needSetup()) {
-                    processResult("Please enter settings first!", true);
-                    return;
-                }
 
-                if(recorder.state !== 'recording') {
-                    $('#record').addClass('recording');
+            if(!simulate && needSetup()) {
+                processResult("Please enter settings first!", true);
+                return;
+            }
 
-                    $("#resultList").empty();
-                    $("#externalLinks").empty();
-                    
-                    chunks = [];
-                    recorder.start();
-                    console.debug("RECORDER STARTED");
+            if(recorder.state !== 'recording') {
+                recButton.addClass('recording');
+                recButton.addClass("button-glow");
 
-                    // prepare timer
-                    var counter = timeout;
-                    var timerElem = $("#timer");
+                $("#resultList").empty();
+                $("#externalLinks").empty();
+
+                chunks = [];
+                recorder.start();
+                console.debug("RECORDER STARTED");
+
+                // prepare timer
+                var counter = timeout;
+                var timerElem = $("#timer");
+                timerElem.html(counter);
+                timerElem.show();
+
+                // start timer
+                var timerId = setInterval(() => {
+                    // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
+                    counter--;
+                    console.debug("timer: " + counter);
                     timerElem.html(counter);
-                    timerElem.show();
 
-                    // start timer
-                    var timerId = setInterval(() => {
-                        // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
-                        counter--;
-                        console.debug("timer: " + counter);
-                        timerElem.html(counter);
-
-                        if(counter < 1 && recorder.state == 'recording')
-                        {
-                            timerElem.hide();
-                            timerElem.empty();
-                            clearInterval(timerId);
-                            recorder.stop();
-                            console.debug("RECORDER STOPPED BY TIMEOUT");
-                            $('#record').removeClass('recording');
-                        }
-                    }, 1000);
-                }
-                else {
-                    recorder.stop();
-                    console.debug("RECORDER STOPPED");
-                    $('#record').removeClass('recording');
-                    $('#result').addClass('spinner');
-                }
-            //}
+                    if(counter < 1 && recorder.state == 'recording')
+                    {
+                        timerElem.hide();
+                        timerElem.empty();
+                        clearInterval(timerId);
+                        recorder.stop();
+                        console.debug("RECORDER STOPPED BY TIMEOUT");
+                        recButton.removeClass('recording');
+                        recButton.removeClass("button-glow");
+                    }
+                }, 1000);
+            }
+            else {
+                recorder.stop();
+                console.debug("RECORDER STOPPED");
+                recButton.removeClass('recording');
+                $('#result').addClass('spinner');
+            }
         });
     }
 };
