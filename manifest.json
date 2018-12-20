@@ -2,7 +2,7 @@
     "name": "soundrecog.luksus",
     "description": "Music Recognition App",
     "architecture": "all",
-    "title": "SoundRecog",
+    "title": "Music Recognition",
     "hooks": {
         "soundrecog": {
             "apparmor": "soundrecog.apparmor",

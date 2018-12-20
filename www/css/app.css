@@ -227,7 +227,7 @@ h1, p {
 }
 
 [data-role="content"] {
-    top: 60px !important;
+    /*top: 60px !important;*/
     background: #261f1f !important;
 }
 

@@ -3,7 +3,6 @@
  ****************************************************/
 var simulate = false;
 var player = false;
-var timeout = simulate ? 3 : 10;
 
 // external services
 var deezerUrl = "https://www.deezer.com/en/track/";
@@ -40,6 +39,14 @@ Application.prototype.init = function () {
         alert("Sorry! No Web Storage support..");
       }
       UI.pagestack.pop("settings");
+    });
+
+    document.querySelector('#switchSimulation').addEventListener('change', function(e, i) {
+      if (e.srcElement.checked === true) {
+        simulate = true;
+      } else {
+        simulate = false;
+      }
     });
 
     var recorder;
@@ -111,7 +118,7 @@ Application.prototype.init = function () {
         console.debug("RECORDER STARTED");
 
         // prepare timer
-        var counter = timeout;
+        var counter = simulate ? 3 : 10;
         var timerElem = $("#timer");
         timerElem.html(counter);
         timerElem.show();

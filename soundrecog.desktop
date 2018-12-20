@@ -1,9 +1,9 @@
 [Desktop Entry]
-Name=SoundRecog
+Name=Music Recognition
 Exec=webapp-container --app-id="soundrecog.luksus" --local-content-can-access-remote-urls $@ www/index.html
 Icon=soundrecog.svg
 Terminal=false
 Type=Application
 X-Ubuntu-Touch=true
-X-Ubuntu-Splash-Color=#A5DE37
+X-Ubuntu-Splash-Color=#261f1f
 
