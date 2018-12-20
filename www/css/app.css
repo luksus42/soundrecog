@@ -271,3 +271,7 @@ a {
     background: url(../img/spinner.svg) no-repeat center #00000000;
     background-size: 5rem 5rem;
 }
+
+#timer {
+    font-size: 3em !important;
+}

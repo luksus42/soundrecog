@@ -1,10 +1,16 @@
+/*******************************************************
+ * some global constants
+ ****************************************************/
 var simulate = false;
 var player = false;
+var timeout = simulate ? 3 : 10;
 
 // external services
 var deezerUrl = "https://www.deezer.com/en/track/";
 var spotifyUrl = "https://open.spotify.com/track/";
 var youtubeUrl = "https://www.youtube.com/watch?v=";
+
+/*******************************************************/
 
 function Application(UIContext) {
     this._uiContextClass = UIContext;
@@ -100,16 +106,30 @@ Application.prototype.init = function() {
                     chunks = [];
                     recorder.start();
                     console.debug("RECORDER STARTED");
-                    
-                    setTimeout(() => {
+
+                    // prepare timer
+                    var counter = timeout;
+                    var timerElem = $("#timer");
+                    timerElem.html(counter);
+                    timerElem.show();
+
+                    // start timer
+                    var timerId = setInterval(() => {
                         // this will trigger one final 'ondataavailable' event and set recorder state to 'inactive'
-                        if(recorder.state == 'recording')
+                        counter--;
+                        console.debug("timer: " + counter);
+                        timerElem.html(counter);
+
+                        if(counter < 1 && recorder.state == 'recording')
                         {
+                            timerElem.hide();
+                            timerElem.empty();
+                            clearInterval(timerId);
                             recorder.stop();
                             console.debug("RECORDER STOPPED BY TIMEOUT");
                             $('#record').removeClass('recording');
                         }
-                    }, simulate ? 3000 : 10000);
+                    }, 1000);
                 }
                 else {
                     recorder.stop();
