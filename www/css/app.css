@@ -14,7 +14,6 @@
         text-decoration: none;
         text-align: center;
         line-height: 60px;
-        margin-left: -10px;
         margin-bottom: 20px;
         display: inline-block;
         cursor: pointer;
@@ -49,8 +48,6 @@
         text-decoration: none;
         text-align: center;
         line-height: 60px;
-        /*margin-left: -10px;
-        margin-bottom: 20px; */
         display: inline-block;
         cursor: pointer;
         border: none;
