@@ -2,19 +2,20 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-    xmlns:dc="http://purl.org/dc/elements/1.1/"
-    xmlns:cc="http://creativecommons.org/ns#"
-    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-    width="100mm"
-    height="100mm"
-    viewBox="0 0 100 100"
-    version="1.1"
-    id="svg8"
-    inkscape:version="0.92.2 2405546, 2018-03-11"
-    sodipodi:docname="soundrecog.svg">
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="100mm"
+   height="100mm"
+   viewBox="0 0 100 100"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.4 5da689c313, 2019-01-14"
+   sodipodi:docname="soundrecog.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -24,19 +25,19 @@
      borderopacity="1.0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.979899"
-     inkscape:cx="205.1396"
-     inkscape:cy="213.37936"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="-85.30093"
+     inkscape:cy="201.44109"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      showgrid="false"
      inkscape:pagecheckerboard="true"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1684"
-     inkscape:window-height="1400"
-     inkscape:window-x="6"
-     inkscape:window-y="902"
+     inkscape:window-width="1366"
+     inkscape:window-height="747"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="0" />
   <metadata
      id="metadata5">
@@ -46,15 +47,29 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Ebene 5">
+    <rect
+       style="opacity:1;fill:#a5de37;fill-opacity:1;stroke:#a5de37;stroke-width:0;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect830"
+       width="104.39546"
+       height="102.52459"
+       x="-1.122532"
+       y="-1.4020587" />
+  </g>
+  <g
      inkscape:label="Ebene 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-197)">
+     transform="translate(0,-197)"
+     style="display:inline"
+     sodipodi:insensitive="true">
     <rect
        style="fill:#a5de37;fill-opacity:1;stroke:none;stroke-width:0.26458332;stroke-opacity:0.94117647"
        id="rect815"
@@ -66,19 +81,9 @@
   </g>
   <g
      inkscape:groupmode="layer"
-     id="layer2"
-     inkscape:label="Ebene 2"
-     style="display:none">
-    <path
-       style="fill:#ffffff;fill-opacity:1;stroke-width:0.4252232"
-       inkscape:connector-curvature="0"
-       d="m 18.426339,32.909226 v 26.654267 c -1.251432,-0.724581 -2.702719,-1.140874 -4.252232,-1.140874 -4.6970152,0 -8.5044642,3.807448 -8.5044642,8.504464 0,4.697015 3.807449,8.504464 8.5044642,8.504464 4.69659,0 8.504464,-3.807449 8.504464,-8.504464 V 41.41369 h 21.261161 v 13.89757 c -1.251007,-0.72458 -2.702294,-1.140873 -4.252232,-1.140873 -4.697016,0 -8.504465,3.807448 -8.504465,8.504464 0,4.697015 3.807449,8.504464 8.504465,8.504464 4.69659,0 8.504464,-3.807449 8.504464,-8.504464 V 32.909226 Z"
-       id="path865" />
-  </g>
-  <g
-     inkscape:groupmode="layer"
      id="layer3"
-     inkscape:label="Ebene 3">
+     inkscape:label="Ebene 3"
+     style="display:inline">
     <g
        transform="matrix(0.263858,0.27836505,-0.263858,0.27836505,34.123911,17.256868)"
        id="g1486"
@@ -100,7 +105,7 @@
          id="path1484-3" />
     </g>
     <path
-       style="fill:#ae4234;fill-opacity:0.04263566;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0"
+       style="fill:#ae4234;fill-opacity:0.04263569;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0"
        d="M 47.990703,58.294002 52.046728,39.477643 62.991713,-1.3696089 H 101.29761 V 101.88988 H 36.285714 Z"
        id="path5825-7"
        inkscape:connector-curvature="0" />
@@ -108,7 +113,8 @@
   <g
      inkscape:groupmode="layer"
      id="layer4"
-     inkscape:label="Ebene 4">
+     inkscape:label="Ebene 4"
+     style="display:inline">
     <path
        style="fill:#ae4234;fill-opacity:0.03875972;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:0"
        d="M 49.049037,58.294001 53.105062,39.477642 64.050047,-1.3696089 H 102.35593 V 101.8899 H 37.344048 Z"
