@@ -10,6 +10,7 @@ var spotifyUrl = "https://open.spotify.com/track/";
 var youtubeUrl = "https://www.youtube.com/watch?v=";
 
 var resultProperties = ["artists", "genres", "title", "release_date", "label", "album"];
+var UI;
 /*******************************************************/
 
 function Application(UIContext) {
@@ -227,7 +228,7 @@ function processResult(result, xhr, originalBlob) {
         // Load blob as Data URL
         fileReader.readAsDataURL(originalBlob);
         // read blob from stored object??: blob = new Blob(responseObject.blob, {type: "audio/webm"});
-        list.append("<li>No internet connection!</li>");
+        list.append("<li><strong>No internet connection!</strong></li>");
         list.append("<li>The recording has been saved.</li>");
         list.append("<li>You can execute the recognition from the history again.</li>");
       }
@@ -253,7 +254,7 @@ function processResult(result, xhr, originalBlob) {
 
   var dataList = result.metadata.music[0];
 
-  list.append(recurse(dataList, resultProperties));
+  list.append(recurseCreateList(dataList, resultProperties));
 
   // add external service links
   var extLinks = $("#externalLinks");
@@ -268,28 +269,35 @@ function processResult(result, xhr, originalBlob) {
   }
 };
 
-function processExternalMetadata(externalMetadata, element) {
+function processExternalMetadata(data, element) {
+  var externalMetadata = data.external_metadata;
   element.empty();
 
   // deezer
   deezerId = externalMetadata.deezer ? externalMetadata.deezer.track.id : null;
   if (deezerId) {
-    element.append("<a href='" + deezerUrl + deezerId + "' target='_blank'><div class='serviceLink' id='deezer' /></a>");
+    element.append("<a href='" + deezerUrl + deezerId + "' target='_blank'><div class='serviceLink deezer' /></a>");
   }
   // spotify
   spotifyId = externalMetadata.spotify ? externalMetadata.spotify.track.id : null;
   if (spotifyId) {
-    element.append("<a href='" + spotifyUrl + spotifyId + "' target='_blank'><div class='serviceLink' id='spotify' /></a>");
+    element.append("<a href='" + spotifyUrl + spotifyId + "' target='_blank'><div class='serviceLink spotify' /></a>");
   }
   // youtube
   youtubeId = externalMetadata.youtube ? externalMetadata.youtube.vid : null;
   if (youtubeId) {
-    element.append("<a href='" + youtubeUrl + youtubeId + "' target='_blank'><div class='serviceLink' id='youtube' /></a>");
+    element.append("<a href='" + youtubeUrl + youtubeId + "' target='_blank'><div class='serviceLink youtube' /></a>");
   }
 
+  // copy to clipboard
+  var copyElem = $("<a href='#'><div class='serviceLink copy' /></a>");
+  copyElem.on("click", function() {
+    openCopyToClipboardOptions(data);
+  })
+  element.append(copyElem);
 }
 
-function recurse(data, elements) {
+function recurseCreateList(data, elements) {
   var htmlRetStr = "<ul class='recurseObj'>";
   for (var key in data) {
     if (elements === null || elements.includes(key)) {
@@ -307,7 +315,7 @@ function recurse(data, elements) {
           htmlRetStr += "</li>";
         } else {
           htmlRetStr += "<li class='keyObj' ><strong>" + capitalizeFirstLetter(key) + ":</strong><ul class='recurseSubObj'>";
-          htmlRetStr += recurse(data[key], elements);
+          htmlRetStr += recurseCreateList(data[key], elements);
           htmlRetStr += '</ul></li>';
         }
       } else {
@@ -319,6 +327,39 @@ function recurse(data, elements) {
   htmlRetStr += '</ul>';
   return (htmlRetStr);
 };
+
+/**
+ * Find the value to the corresponding key in a JSON-Object.
+ * @param {JSON} data 
+ * @param {string} key 
+ */
+function recurseGetValue(data, key) {
+  var value = "";
+
+  for (var prop in data) {
+    if(prop === key) {
+      if (typeof (data[prop]) == 'object' && data[prop] != null) {
+        if (data[prop].name)
+          value = data[prop].name;
+        else if (data[prop].length !== "NaN") {
+          var arr = data[prop];
+          for (var elem in arr) {
+            value += arr[elem].name;
+            if (parseInt(elem) + 1 < arr.length)
+              value += ", ";
+          }
+        } else {
+          recurseGetValue(data[prop], elements);
+        }
+      } else {
+        value = data[prop];
+      }
+
+      return value;
+    }
+  }
+  return null;
+}
 
 // appends an audio element to playback and download recording
 function createAudioElement(blobUrl, parent) {
@@ -396,8 +437,8 @@ function prepareHistoryList() {
     if(entry.result) {
       let body = $("<div class='accordionEntryBody'></div>");
       let links = $("<div style='margin-left: 0.5rem;'></div>");
-      processExternalMetadata(entry.result.external_metadata, links);
-      body.append(recurse(entry.result, resultProperties));
+      processExternalMetadata(entry.result, links);
+      body.append(recurseCreateList(entry.result, resultProperties));
       body.append(links);
       accordionDiv.append(body);
     }
@@ -484,4 +525,64 @@ function dataURItoBlob(dataURI) {
   var blob = new Blob([ab], {type: mimeString});
   return blob;
 
+}
+
+function openCopyToClipboardOptions(data) {
+  UI.pagestack.push("copyToClipboard");
+
+  var copyArtist = $("#copyArtist");
+  var copyTitle = $("#copyTitle");
+  var copyArtistTitle = $("#copyArtistTitle");
+  var copyAll = $("#copyAll");
+
+  copyArtist.unbind("click");
+  copyTitle.unbind("click");
+  copyArtistTitle.unbind("click");
+  copyAll.unbind("click");
+
+  copyArtist.on("click", function(event) {
+    let value = recurseGetValue(data, "artists");
+    copyTextToClipboard(value);
+    $(this).unbind(event);
+    UI.pagestack.pop("copyToClipboard");
+  });
+
+  copyTitle.on("click", function(event) {
+    let value = recurseGetValue(data, "title");
+    copyTextToClipboard(value);
+    $(this).unbind(event);
+    UI.pagestack.pop("copyToClipboard");
+  });
+
+  copyArtistTitle.on("click", function(event) {
+    let value1 = recurseGetValue(data, "artists");
+    let value2 = recurseGetValue(data, "title");
+    copyTextToClipboard(value1 +" - "+ value2);
+    $(this).unbind(event);
+    UI.pagestack.pop("copyToClipboard");
+  });
+
+  copyAll.on("click", function(event) {
+    let values = "";
+
+    resultProperties.forEach(prop => {
+      let value = recurseGetValue(data, prop);
+      if(value) values += "\n" + capitalizeFirstLetter(prop) +": "+ value;
+    });
+    copyTextToClipboard(values);
+    $(this).unbind(event);
+    UI.pagestack.pop("copyToClipboard");
+  });
+}
+
+function copyTextToClipboard(str) {
+  const el = document.createElement('textarea');
+  el.value = str;
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
 }
