@@ -258,7 +258,7 @@ function processResult(result, xhr, originalBlob) {
 
   // add external service links
   var extLinks = $("#externalLinks");
-  processExternalMetadata(dataList.external_metadata, extLinks);
+  processExternalMetadata(dataList, extLinks);
 
   //write History
   if(!simulate) {
