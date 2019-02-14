@@ -21,6 +21,7 @@
   <link href="ubuntu-html5-ui-toolkit/0.1/ambiance/css/appTemplate.css" rel="stylesheet" type="text/css"/>
 
   <script src="js/jquery/jquery.min.js"></script>
+  <script src="js/jquery/jquery-ui.min.js"></script>
 
   <script src="js/cryptoJS/core.js"></script>
   <script src="js/cryptoJS/sha1.js"></script>
@@ -61,6 +62,12 @@
         <footer data-role="footer" id="toolbar" class="revealed">
           <nav>
             <ul>
+              <li data-role="tabitem" data-page="historyTab">
+                <a href="#" id="historyBtn">
+                  <img src="img/ubuntu-mobile/actions/scalable/browser-timeline.svg" alt="no pic"/>
+                  <span>History</span>
+                </a>
+              </li>
               <li data-role="tabitem" data-page="settingsTab">
                 <a href="#" id="settingsBtn">
                   <img src="img/ubuntu-mobile/actions/scalable/settings.svg" alt="no pic"/>
@@ -99,7 +106,7 @@
         </div>
       </div>
 
-      <div data-role="page" id="settings" data-title="settings">
+      <div data-role="page" id="settings" data-title="Settings">
 
         <footer data-role="footer" id="settingsToolbar" class="revealed">
           <nav>
@@ -146,7 +153,11 @@
         </div>
 
       </div>
-    </div>
+
+      <div data-role="page" id="history" data-title="History">
+        <div id="jqAccordion"></div>
+      </div>
+    </div><!-- End of Pagestack -->
 
   </div><!-- End of Content-->
 </div>

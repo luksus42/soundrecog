@@ -9,6 +9,7 @@ var deezerUrl = "https://www.deezer.com/en/track/";
 var spotifyUrl = "https://open.spotify.com/track/";
 var youtubeUrl = "https://www.youtube.com/watch?v=";
 
+var resultProperties = ["artists", "genres", "title", "release_date", "label", "album"];
 /*******************************************************/
 
 function Application(UIContext) {
@@ -49,6 +50,20 @@ Application.prototype.init = function () {
       }
     });
 
+    $("#historyBtn").click(function () {
+      prepareHistoryList();
+      UI.pagestack.push("history");
+    });
+
+    $("#jqAccordion").accordion({
+      collapsible: true,
+      active: false,
+      heightStyle: "content",
+      animate: 100
+    });
+
+    //////////////////////////////////// main /////////////////////////////////////////
+
     var recorder;
     var chunks;
 
@@ -73,10 +88,7 @@ Application.prototype.init = function () {
           let blob = new Blob(chunks, {type: 'audio/webm'});
 
           if (!simulate) {
-            identify(blob, blob.size, getConfig(), function (err, httpResponse, body) {
-              if (err) console.log(err);
-              console.log(body);
-            });
+            identify(blob, blob.size, getConfig(), processResult);
           } else {
             setTimeout(() => {
               processResult(null, null);
@@ -100,7 +112,11 @@ Application.prototype.init = function () {
     recButton.click(function () {
 
       if (!simulate && needSetup()) {
-        processResult("Please enter settings first!", true);
+        $('#result').removeClass('spinner');
+        $('#record').prop("disabled", false);
+        var list = $("#resultList");
+        list.empty();
+        list.append("<li>Please enter settings first!</li>");
         return;
       }
 
@@ -181,23 +197,47 @@ function getConfig() {
   };
 }
 
-function processResult(result, requestError) {
+function processResult(result, xhr, originalBlob) {
   // we have a result -> remove spinner
   $('#result').removeClass('spinner');
   $('#record').prop("disabled", false);
 
-    if(simulate)
-        result = simulationResult;
+  var timestamp = new Date().toLocaleString();
+  var resultObject = {"timestamp": timestamp, "result": null, "message": "", "status": ""};
+
+  if(simulate)
+    result = simulationResult;
 
   var list = $("#resultList");
   list.empty();
 
-  if (requestError) {
-    list.append("<li>requestError: " + result + "</li>");
+  // in case of no result
+  if (xhr.status != 200) {
+    if(xhr.status < 200 || xhr.status >= 304 /*no internet/timeout/connectionerror*/) {
+      //option to save blob for later recognition
+      if(originalBlob) {
+        fileReader = new FileReader();
+        fileReader.onload = function (evt) {
+          // Read out file contents as a Data URL
+          resultObject.blob = evt.target.result;
+          resultObject.message = "No internet connection";
+          resultObject.status = "failed";
+          addToHistory(resultObject);
+        };
+        // Load blob as Data URL
+        fileReader.readAsDataURL(originalBlob);
+        // read blob from stored object??: blob = new Blob(responseObject.blob, {type: "audio/webm"});
+        list.append("<li>No internet connection!</li>");
+        list.append("<li>The recording has been saved.</li>");
+        list.append("<li>You can execute the recognition from the history again.</li>");
+      }
+    } else {
+      list.append("<li>requestError: " + result + "</li>");
+    }
     return;
   }
 
-  // in case of an error
+  // in case of a negative result
   if (result.status) {
     let data = result.status;
     if (data["code"] !== 0) {
@@ -211,31 +251,38 @@ function processResult(result, requestError) {
     }
   }
 
-  var dataList = result.metadata.music;
+  var dataList = result.metadata.music[0];
 
-  var elements = ["artists", "genres", "title", "release_date", "label", "album"];
-  list.append(recurse(dataList[0], elements));
+  list.append(recurse(dataList, resultProperties));
 
   // add external service links
-  processExternalMetadata(dataList[0].external_metadata);
+  var extLinks = $("#externalLinks");
+  processExternalMetadata(dataList.external_metadata, extLinks);
+
+  //write History
+  if(!simulate) {
+    resultObject.result = dataList;
+    resultObject.status = "success";
+    resultObject.message = dataList.artists[0].name +" - "+ dataList.title;
+    addToHistory(resultObject);
+  }
 };
 
-function processExternalMetadata(externalMetadata) {
-  var element = $("#externalLinks");
+function processExternalMetadata(externalMetadata, element) {
   element.empty();
 
   // deezer
-  deezerId = externalMetadata.deezer.track.id;
+  deezerId = externalMetadata.deezer ? externalMetadata.deezer.track.id : null;
   if (deezerId) {
     element.append("<a href='" + deezerUrl + deezerId + "' target='_blank'><div class='serviceLink' id='deezer' /></a>");
   }
   // spotify
-  spotifyId = externalMetadata.spotify.track.id;
+  spotifyId = externalMetadata.spotify ? externalMetadata.spotify.track.id : null;
   if (spotifyId) {
     element.append("<a href='" + spotifyUrl + spotifyId + "' target='_blank'><div class='serviceLink' id='spotify' /></a>");
   }
   // youtube
-  youtubeId = externalMetadata.youtube.vid;
+  youtubeId = externalMetadata.youtube ? externalMetadata.youtube.vid : null;
   if (youtubeId) {
     element.append("<a href='" + youtubeUrl + youtubeId + "' target='_blank'><div class='serviceLink' id='youtube' /></a>");
   }
@@ -277,14 +324,16 @@ function recurse(data, elements) {
 function createAudioElement(blobUrl, parent) {
   const downloadEl = document.createElement('a');
   downloadEl.style = 'display: block';
-  downloadEl.innerHTML = 'download';
+  //downloadEl.innerHTML = 'download';
   downloadEl.download = 'audio.webm';
   downloadEl.href = blobUrl;
+  
   const audioEl = document.createElement('audio');
   audioEl.controls = true;
   const sourceEl = document.createElement('source');
   sourceEl.src = blobUrl;
   sourceEl.type = 'audio/webm';
+  
   audioEl.appendChild(sourceEl);
   parent.append(audioEl);
   parent.append(downloadEl);
@@ -292,4 +341,147 @@ function createAudioElement(blobUrl, parent) {
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+/**
+ * data-json like this:
+ *  {
+ *    "timestamp": "01.01.2019 12:00:00",
+ *    "status": "success|failed",
+ *    "message": "...",
+ *    "result": {
+ *        ...
+ *     },
+ *    "blob": "base64 String or null"
+ *  }
+ * @param {*} data 
+ */
+function addToHistory(data) {
+
+  var historyEntries = getHistory();
+
+  // keep a maximum of 30 entries, remove oldest (last) entry
+  if(historyEntries.length >= 30) {
+    historyEntries.pop();
+  }
+
+  // add new element at the beginning
+  historyEntries.unshift(data);
+
+  //write history back to local storage
+  localStorage.setItem("recognitionHistory", JSON.stringify(historyEntries));
+}
+
+function getHistory() {
+  var historyEntries = localStorage.getItem("recognitionHistory");
+  if(JSON.parse(historyEntries)) {
+    return JSON.parse(historyEntries);
+  } else {
+    return [];
+  }
+}
+
+function prepareHistoryList() {
+  var accordionDiv = $("#jqAccordion");
+  accordionDiv.empty();
+  var counter = 0;
+
+  $.each(getHistory(), function(idx, entry) {
+    // header
+    var header = $("<h1 class='accordionEntryHeader "+entry.status+"'></h1>");
+    header.append("<div><span class='timestamp'>"+entry.timestamp+"</span><br>"+entry.message+"</div>");
+    accordionDiv.append(header);
+    
+    // body with positive result
+    if(entry.result) {
+      let body = $("<div class='accordionEntryBody'></div>");
+      let links = $("<div style='margin-left: 0.5rem;'></div>");
+      processExternalMetadata(entry.result.external_metadata, links);
+      body.append(recurse(entry.result, resultProperties));
+      body.append(links);
+      accordionDiv.append(body);
+    }
+    // no result - adds the possibiliy to re-execute the recognition
+    else if(entry.blob) {
+      let body = $("<div class='accordionEntryBody'></div>");
+      // var bodyContainer = $("<div class='bodyContainer'></div>");
+      createAudioElement(entry.blob, body);
+
+      if(entry.status === "failed") {
+        var refresh = $("<div class='inlineButton'><div class='refresh'></div></div>");
+        refresh.on("click", function() {
+          accordionDiv.empty();
+          accordionDiv.addClass('spinner');
+
+          let blob = dataURItoBlob(entry.blob);
+          identify(blob, blob.size, getConfig(), function(result, xhr, originalBlob) {
+            
+            // only do update the entry, if the request was successful
+            if (xhr.status === 200 && result.status) {
+              accordionDiv.removeClass('spinner');
+
+              let resultObject = {"timestamp": entry.timestamp, "result": null, "message": "", "status": ""};
+              let data = result.status;
+              
+              if (data["code"] === 0) {
+                var dataList = result.metadata.music[0];
+                resultObject.result = dataList;
+                resultObject.status = "success";
+                resultObject.message = dataList.artists[0].name +" - "+ dataList.title;
+              } else {
+                resultObject.message = result.status.msg;
+                resultObject.status = "success";
+              }
+
+              var history = getHistory();
+              // replace data of this entry
+              history.splice(idx, 1, resultObject);
+              localStorage.setItem("recognitionHistory", JSON.stringify(history));
+              // reload history
+              prepareHistoryList();
+            } else {
+              setTimeout(() => {
+                accordionDiv.removeClass('spinner');
+                prepareHistoryList();
+              }, 1000);
+            }
+          });
+          
+        });
+        body.append(refresh);
+      }
+      accordionDiv.append(body);
+    } else {
+      accordionDiv.append("<div class='accordionEntryBody'></div>");
+    }
+
+    counter++;
+  });
+
+  accordionDiv.accordion("refresh");
+}
+
+function dataURItoBlob(dataURI) {
+  // convert base64 to raw binary data held in a string
+  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+  var byteString = atob(dataURI.split(',')[1]);
+
+  // separate out the mime component
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+  // write the bytes of the string to an ArrayBuffer
+  var ab = new ArrayBuffer(byteString.length);
+
+  // create a view into the buffer
+  var ia = new Uint8Array(ab);
+
+  // set the bytes of the buffer to the correct values
+  for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+  }
+
+  // write the ArrayBuffer to a blob, and you're done
+  var blob = new Blob([ab], {type: mimeString});
+  return blob;
+
 }

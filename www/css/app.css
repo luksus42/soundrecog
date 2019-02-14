@@ -195,7 +195,7 @@ body {
 
 [data-role="tabtitle"] {
     text-align: center !important;
-    padding-left: 28px !important;
+    /* padding-left: 28px !important; */
 }
 
 /* [data-role="back-btn"]:disabled {
@@ -251,6 +251,13 @@ h1, p {
     display: inline-block;
 }
 
+.accordionEntryBody .serviceLink {
+    width: 40px;
+    height: 40px;
+    margin: 0.5 1rem;
+    display: inline-block;
+}
+
 #deezer {
     background: url(../img/deezer-logo.svg) no-repeat center #00000000;
     background-size: contain;
@@ -285,4 +292,63 @@ a {
 
 #timer {
     font-size: 3em !important;
+}
+
+.accordionEntryHeader {
+    height: auto;
+    width: 100%;
+    padding: 0.5rem 1.5rem;
+    border-bottom: 1px solid #ffffff33;
+    font-size: 1.4rem !important;
+    color: #ececec !important;
+    line-height: 1.5rem !important;
+    font-weight: bold !important;
+}
+
+.accordionEntryBody {
+    /* height: auto !important; */
+    font-size: 1.4rem;
+    line-height: 2rem;
+    line-break: normal;
+    overflow: auto;
+    width: 100%;
+    color: #b5b5b5 !important;
+    border-bottom: 1px solid #ffffff33;
+}
+
+.accordionEntryBody ul {
+    margin: 0.5rem 1.5rem;
+}
+
+.failed {
+    background-color: #b4000081
+}
+
+.success {
+    background-color: rgba(166, 222, 55, 0.5)
+}
+
+.timestamp {
+    font-size: 1rem;
+}
+
+.refresh {
+    background: url(../img/ubuntu-mobile/actions/scalable/reload.svg) no-repeat center #a5de37;
+    background-size: contain;
+    background-size: 25px;
+    height: 35px;
+    width: 35px;
+    border-radius: 20px;
+    margin: 0 auto;
+}
+
+.accordionEntryBody audio {
+    width: 78%;
+    float: left;
+}
+
+.inlineButton {
+    width: 12%;
+    float: left;
+    padding: 10px;
 }

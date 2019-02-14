@@ -12,7 +12,7 @@ function sign(signString, accessSecret) {
 /**
  * Identifies a sample of bytes
  */
-function identify(data, length, options, cb) {
+function identify(data, length, options, callback) {
 
   if (!Date.now) {
     Date.now = function() { return new Date().getTime(); }
@@ -45,12 +45,13 @@ function identify(data, length, options, cb) {
   $.ajax({
     url: 'http://'+options.host + options.endpoint,
     method: 'POST',
+    timeout: 20000,
     data: formData,
     contentType: false,
     processData :false
-  }).done(function(data){
-    processResult(JSON.parse(data), false);
-  }).fail(function(data){
-    processResult(JSON.stringify(data), true);
+  }).done(function(result, textStatus, jqXHR){
+    callback(JSON.parse(result), jqXHR, data);
+  }).fail(function(jqXHR, textStatus, errorThrown){
+    callback(errorThrown, jqXHR, data);
   });
 }
