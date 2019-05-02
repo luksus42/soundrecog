@@ -206,14 +206,14 @@ function processResult(result, xhr, originalBlob) {
   var timestamp = new Date().toLocaleString();
   var resultObject = {"timestamp": timestamp, "result": null, "message": "", "status": ""};
 
-  if(simulate)
-    result = simulationResult;
-
   var list = $("#resultList");
   list.empty();
 
   // in case of no result
-  if (xhr.status != 200) {
+  if(simulate) {
+    result = simulationResult;
+  }
+  else if (xhr.status != 200) {
     if(xhr.status < 200 || xhr.status >= 304 /*no internet/timeout/connectionerror*/) {
       //option to save blob for later recognition
       if(originalBlob) {
